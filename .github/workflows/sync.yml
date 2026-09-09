@@ -2,8 +2,8 @@ name: 同步外部插件
 
 on:
   schedule:
-    - cron: '0 0 * * *'      # 每天 00:00 自动运行（UTC时间）
-  workflow_dispatch:          # 支持手动触发
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -13,34 +13,42 @@ jobs:
       - name: 检出当前仓库
         uses: actions/checkout@v4
 
-      - name: 从 sugarforever/dsh-plugins 拉取
+      - name: 拉取 sugarforever/dsh-plugins
         run: |
           git remote add sugar https://github.com/sugarforever/dsh-plugins.git
-          git fetch sugar
-          git checkout sugar/main -- dsh-zvec-grep || true
+          git fetch sugar || true
+          git checkout sugar/main -- dsh-zvec-grep 2>/dev/null || echo "跳过 sugar 插件"
+          git remote remove sugar
 
-      - name: 从 acosmi/dsh-plugin 拉取
+      - name: 拉取 acosmi/dsh-plugin
         run: |
           git remote add acosmi https://github.com/acosmi/dsh-plugin.git
-          git fetch acosmi
-          git checkout acosmi/main -- plugins/ || true
+          git fetch acosmi || true
+          git checkout acosmi/main -- plugins/ 2>/dev/null || echo "跳过 acosmi 插件"
+          git remote remove acosmi
 
-      - name: 从 mapan0424/deepseek-harness-plugins 拉取
+      - name: 拉取 mapan0424/deepseek-harness-plugins
         run: |
           git remote add mapan https://github.com/mapan0424/deepseek-harness-plugins.git
-          git fetch mapan
-          git checkout mapan/main -- packages/ || true
+          git fetch mapan || true
+          git checkout mapan/main -- packages/ 2>/dev/null || echo "跳过 mapan 插件"
+          git remote remove mapan
 
-      - name: 从 ZiFan1117/dsh-atom-market 拉取
+      - name: 拉取 ZiFan1117/dsh-atom-market
         run: |
           git remote add atom https://github.com/ZiFan1117/dsh-atom-market.git
-          git fetch atom
-          git checkout atom/main -- . || true
+          git fetch atom || true
+          git checkout atom/main -- . 2>/dev/null || echo "跳过 atom-market 插件"
+          git remote remove atom
 
       - name: 提交并推送更改
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git diff --staged --quiet || git commit -m "🤖 自动同步外部插件"
-          git push
+          if git diff --staged --quiet; then
+            echo "没有新文件需要提交"
+          else
+            git commit -m "🤖 自动同步外部插件"
+            git push
+          fi
