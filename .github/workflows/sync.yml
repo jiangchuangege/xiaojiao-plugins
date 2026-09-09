@@ -1,3 +1,4 @@
+
 name: 同步外部插件
 
 on:
@@ -5,10 +6,13 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch:
 
+# 关键：为 GITHUB_TOKEN 授予写入权限
+permissions:
+  contents: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
-
     steps:
       - name: 检出当前仓库
         uses: actions/checkout@v4
