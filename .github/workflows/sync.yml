@@ -1,0 +1,46 @@
+name: 同步外部插件
+
+on:
+  schedule:
+    - cron: '0 0 * * *'      # 每天 00:00 自动运行（UTC时间）
+  workflow_dispatch:          # 支持手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出当前仓库
+        uses: actions/checkout@v4
+
+      - name: 从 sugarforever/dsh-plugins 拉取
+        run: |
+          git remote add sugar https://github.com/sugarforever/dsh-plugins.git
+          git fetch sugar
+          git checkout sugar/main -- dsh-zvec-grep || true
+
+      - name: 从 acosmi/dsh-plugin 拉取
+        run: |
+          git remote add acosmi https://github.com/acosmi/dsh-plugin.git
+          git fetch acosmi
+          git checkout acosmi/main -- plugins/ || true
+
+      - name: 从 mapan0424/deepseek-harness-plugins 拉取
+        run: |
+          git remote add mapan https://github.com/mapan0424/deepseek-harness-plugins.git
+          git fetch mapan
+          git checkout mapan/main -- packages/ || true
+
+      - name: 从 ZiFan1117/dsh-atom-market 拉取
+        run: |
+          git remote add atom https://github.com/ZiFan1117/dsh-atom-market.git
+          git fetch atom
+          git checkout atom/main -- . || true
+
+      - name: 提交并推送更改
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff --staged --quiet || git commit -m "🤖 自动同步外部插件"
+          git push
