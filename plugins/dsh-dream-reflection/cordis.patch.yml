@@ -1,0 +1,59 @@
+# dsh-dream-reflection bundle patch: the SQLite store provider row and the
+# engine row, applied after dsh-base's insert. The profile's own
+# cordis.patch.yml can override either row by id — a patch replaces the row's
+# whole `config`, so an overlay restates every key it owns.
+#
+# Defaults are the conservative launch set: `enabled: false` means zero model
+# cost until the user opts in and fills `provider` / `model`.
+
+- insert:
+    - id: dream-reflection-store-sqlite
+      name: dsh-dream-reflection/store-sqlite
+      config:
+        busyTimeoutMs: 2000
+        leaseTtlMs: 180000
+        # `path` omitted: resolves to $DSH_HOME/dream-reflection/state.sqlite
+        # through @deepseek-ai/dsh-home-paths::resolveDshHome.
+
+    - id: dream-reflection
+      name: dsh-dream-reflection
+      inject: [dreamReflectionStore]
+      config:
+        enabled: false
+        provider: ''
+        model: ''
+        scope:
+          mode: live-roots
+          allowedCwds: []
+        schedule:
+          scanEveryMs: 900000
+          quietForMs: 600000
+          minSuccessIntervalMs: 64800000
+          retryBaseMs: 1800000
+        corpus:
+          minNewTextBytes: 12288
+          pressureTextBytes: 65536
+          maxSessions: 6
+          maxEvents: 96
+          maxEventBytes: 6144
+          maxInputBytes: 98304
+        reflection:
+          maxThemes: 3
+          maxEvidenceRefsPerTheme: 10
+          maxCandidates: 3
+          nearDuplicateThreshold: 0.9
+        limits:
+          phaseTimeoutMs: 90000
+          runTimeoutMs: 720000
+          maxCallsPerRun: 4
+          maxOutputTokensPerCall: 2048
+          dailyCallLimit: 24
+          dailyTokenLimit: 250000
+        context:
+          maxInjectedBytes: 12288
+        retention:
+          runLedgerDays: 30
+          quarantineDays: 60
+        store:
+          busyTimeoutMs: 2000
+          leaseTtlMs: 180000

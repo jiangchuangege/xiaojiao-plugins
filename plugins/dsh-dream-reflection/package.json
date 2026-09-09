@@ -1,0 +1,63 @@
+{
+  "name": "dsh-dream-reflection",
+  "version": "0.1.0-rc.1",
+  "description": "Scheduled dream-reflection plugin for DeepSeek Harness: bounded, redacted, quarantine-reviewed memory cards over workspace sessions.",
+  "private": true,
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/types/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./store-sqlite": {
+      "types": "./lib/types/store/sqlite.d.ts",
+      "default": "./lib/store/sqlite.js"
+    }
+  },
+  "files": [
+    "lib/**/*.js",
+    "lib/types/**/*.d.ts",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh.md",
+    "LICENSE",
+    "SECURITY.md",
+    "PRIVACY.md",
+    "PROVENANCE.md",
+    "THREAT_MODEL.md",
+    "ADR.md",
+    "COMPATIBILITY.md",
+    "CONTRIBUTING.md",
+    "THIRD_PARTY_NOTICES.md",
+    "sbom.cdx.json",
+    "SHA256SUMS"
+  ],
+  "engines": {
+    "node": "^22.19 || >=24"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acosmi/dsh-plugin.git",
+    "directory": "plugins/dsh-dream-reflection"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/cordis-plugin-timer": "^1.1.2",
+    "@deepseek-ai/schemastery": "^3.18.1",
+    "@deepseek-ai/dsh-agent": "0.1.0-rc.5",
+    "@deepseek-ai/dsh-commands": "0.1.0-rc.5",
+    "@deepseek-ai/dsh-home-paths": "0.1.0-rc.5",
+    "@deepseek-ai/dsh-llm": "0.1.0-rc.5",
+    "@deepseek-ai/dsh-session": "0.1.0-rc.5",
+    "@deepseek-ai/dsh-session-query": "0.1.0-rc.5",
+    "@deepseek-ai/dsh-system-prompt": "0.1.0-rc.5"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+packages:
+  - packages/*
+
+allowBuilds:
+  esbuild: true
+
+minimumReleaseAge: 0
+confirmModulesPurge: false
+storeDir: /tmp/pnpm-store
+# The rc-era @deepseek-ai packages declare peers whose older versions reference
+# the unpublished dsh-type-meta; peers are resolved explicitly instead.
+autoInstallPeers: false

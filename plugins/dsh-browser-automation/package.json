@@ -1,0 +1,22 @@
+{
+  "name": "dsh-browser-automation",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.7.0",
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "scripts": {
+    "typecheck": "tsc -p packages/browser/tsconfig.json && tsc -p packages/browser-playwright/tsconfig.json && tsc -p packages/tool-browser/tsconfig.json",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "build": "pnpm -r build",
+    "pack": "pnpm -r pack"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^3.2.0",
+    "publint": "^0.3.23",
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.0"
+  }
+}

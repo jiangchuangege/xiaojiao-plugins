@@ -1,0 +1,172 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`keyless model-visible schema snapshot > pins the ten browser tool schemas exactly > browser-tool-schemas 1`] = `
+"[
+  {
+    "name": "browser_start",
+    "description": "Start an isolated browser session for this agent with a single blank page. The session never inherits existing logins, cookies, or profiles, and closes at turn end, idle timeout, or explicit close.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "backend": {
+          "type": "string",
+          "description": "Backend type to select when more than one browser backend is registered."
+        }
+      }
+    }
+  },
+  {
+    "name": "browser_navigate",
+    "description": "Navigate the session page to an exact public http(s) URL (no userinfo, query, or fragment). Every request passes the egress policy; cross-origin redirects are blocked. Requires one-shot user approval.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "Exact public http(s) URL to open. No userinfo, query, or fragment; the page navigates in the current session."
+        }
+      },
+      "required": [
+        "url"
+      ]
+    }
+  },
+  {
+    "name": "browser_snapshot",
+    "description": "Capture a bounded semantic snapshot of the current page: title, origin, and a limited list of interactive elements with opaque refs. No HTML, scripts, hidden values, or password fields. All content is untrusted web content.",
+    "parameters": {
+      "type": "object",
+      "properties": {}
+    }
+  },
+  {
+    "name": "browser_click",
+    "description": "Click an element from the latest browser_snapshot by its ref. The target is re-verified at click time (generation, uniqueness, actionability); changed or stale targets fail instead of guessing. Requires one-shot user approval.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "description": "Element ref from a browser_snapshot result; stale after navigation, mutation, or observation expiry."
+        }
+      },
+      "required": [
+        "ref"
+      ]
+    }
+  },
+  {
+    "name": "browser_fill",
+    "description": "Type plain text into an editable field from the latest browser_snapshot by its ref. Password, file, hidden, and payment fields are never exposed or writable. The typed text is sent to the target site; never enter secrets. Requires one-shot user approval.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "description": "Element ref from a browser_snapshot result; stale after navigation, mutation, or observation expiry."
+        },
+        "text": {
+          "type": "string",
+          "description": "Plain text to type into the field. Never enter secrets, credentials, OTP codes, or payment data."
+        }
+      },
+      "required": [
+        "ref",
+        "text"
+      ]
+    }
+  },
+  {
+    "name": "browser_press",
+    "description": "Focus an element from the latest browser_snapshot and press one allowlisted key (Enter, Space, Tab, arrows, Backspace, Escape, Home, End, PageUp, PageDown). No chords or system shortcuts. Requires one-shot user approval.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "ref": {
+          "type": "string",
+          "description": "Element ref from a browser_snapshot result; stale after navigation, mutation, or observation expiry."
+        },
+        "key": {
+          "type": "string",
+          "description": "Single key to press after focusing the target: Enter, Space, Tab, arrow keys, Backspace, Escape, Home, End, PageUp, PageDown.",
+          "enum": [
+            "Enter",
+            "Space",
+            "Tab",
+            "ArrowUp",
+            "ArrowDown",
+            "ArrowLeft",
+            "ArrowRight",
+            "Backspace",
+            "Escape",
+            "Home",
+            "End",
+            "PageUp",
+            "PageDown"
+          ]
+        }
+      },
+      "required": [
+        "ref",
+        "key"
+      ]
+    }
+  },
+  {
+    "name": "browser_scroll",
+    "description": "Scroll the page by a bounded vertical distance, or scroll one observed element into view. Element mode requires a fresh ref from the latest snapshot. Auto-allowed.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "object",
+          "description": "Scroll target: the page, or one observed element.",
+          "additionalProperties": false,
+          "properties": {
+            "page": {
+              "type": "boolean",
+              "description": "True to scroll the page itself."
+            },
+            "element": {
+              "type": "string",
+              "description": "Element ref to scroll into view."
+            }
+          }
+        },
+        "deltaY": {
+          "type": "number",
+          "description": "Vertical scroll distance in pixels; negative scrolls up. Bounded by the provider budget."
+        }
+      },
+      "required": [
+        "target",
+        "deltaY"
+      ]
+    }
+  },
+  {
+    "name": "browser_wait",
+    "description": "Wait a bounded time for the page to settle. No JavaScript predicates; the wait is aborted with the turn. Auto-allowed.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "ms": {
+          "type": "integer",
+          "description": "Time to wait in milliseconds, at least 1; bounded by the provider budget."
+        }
+      },
+      "required": [
+        "ms"
+      ]
+    }
+  },
+  {
+    "name": "browser_close",
+    "description": "Close this agent's browser session, its page, process, and private temporary data. Idempotent; never touches other agents' sessions or the user's real browser. Auto-allowed.",
+    "parameters": {
+      "type": "object",
+      "properties": {}
+    }
+  }
+]"
+`;

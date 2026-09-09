@@ -1,0 +1,14 @@
+# The dsh-browser-standard bundle: one patch layer over the empty profile root.
+# Row order carries no load semantics (activation is service-availability
+# driven); ids are stable across profile composition and may be overridden by
+# later bundle layers and the user's own profile patch.
+
+- insert:
+    - id: browser
+      name: '@dsh-browser-automation/dsh-browser'
+
+    - id: browser-playwright
+      name: '@dsh-browser-automation/dsh-browser-playwright'
+
+    - id: tool-browser
+      name: '@dsh-browser-automation/dsh-tool-browser'
